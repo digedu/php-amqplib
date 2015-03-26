@@ -155,7 +155,8 @@ class AMQPChannel extends AbstractChannel
      */
     public function close($reply_code = 0, $reply_text = '', $method_sig = array(0, 0))
     {
-        if ($this->is_open !== true || null === $this->connection) {
+	// REFERENCE: https://github.com/videlalvaro/php-amqplib/issues/183
+	if ($this->is_open !== true || null === $this->connection || false === $this->connection->isConnected())
             $this->do_close();
 
             return; // already closed
